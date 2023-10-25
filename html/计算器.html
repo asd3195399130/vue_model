@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+  </head>
+  <style></style>
+  <body>
+    <div id="box">
+      <input type="text" v-model="meg" />
+      <input type="text" v-model="vl" />
+      <input type="text" v-model="add" />
+      <button @click="calculate">答案</button>
+      <h1>{{result}}</h1>
+    </div>
+  </body>
+  <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script> -->
+  <script>
+    new Vue({
+      el: "#box",
+      data: {
+        meg: "",
+        vl: "",
+        add: "",
+        result: "",
+      },
+      methods: {
+        calculate() {
+          const num = parseFloat(this.meg);
+          const sum = parseFloat(this.add);
+
+          switch (this.vl) {
+            case "+":
+              this.result = num + sum;
+              break;
+            case "-":
+              this.result = num - sum;
+              break;
+            case "*":
+              this.result = num * sum;
+              break;
+            case "/":
+              if (sum === 0) {
+                this.result = "除数不能为零";
+              } else {
+                this.result = num / sum;
+              }
+              break;
+            default:
+              this.result = "";
+              break;
+          }
+        },
+      },
+    });
+  </script>
+</html>

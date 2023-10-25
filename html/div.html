@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.min.js"></script>
+  </head>
+  <style>
+    #box {
+      width: 1200px;
+      height: 100vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: auto;
+      border: 1px solid black;
+    }
+    #box div:nth-child(1) {
+      width: 200px;
+      height: 200px;
+    }
+    #box div:nth-child(2) {
+      width: 200px;
+      height: 200px;
+    }
+    #box div:nth-child(3) {
+      width: 200px;
+      height: 200px;
+    }
+    #box div:nth-child(4) {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+  <body>
+    <div id="box">
+      <div
+        v-for="(item, index) in shuffledColor"
+        :key="index"
+        :style="getStyle(item)"
+        class="color-box"></div>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    let arr = [];
+    new Vue({
+      el: "#box",
+      data: {
+        msg: "66666",
+        color: [
+          "repeating-linear-gradient(45deg, #ee9ca7, #C6FFDD 20%, #FBD786 20%)",
+          "repeating-linear-gradient(45deg, #f12711, #f5af19 20%, #ee9ca7 20%)",
+          "repeating-linear-gradient(45deg, #240b36, #c31432 20%, #f5af19 20%)",
+          "repeating-linear-gradient(45deg, #1E9600, #FFF200 20%, #FF0000 20%)",
+          "linear-gradient(to right, #FC5C7D, #6A82FB)",
+          "linear-gradient(to right, #0f0c29, #302b63)",
+          "linear-gradient(to right, #302b63,#24243e)",
+          "linear-gradient(to right, #24243e, #00b09b)",
+          "radial-gradient(circle, #F11712, #0099F7)",
+          "radial-gradient(circle, #7303c0, #ec38bc)",
+          "radial-gradient(circle,#fdeff9, #03001e)",
+          "radial-gradient(circle, #fdeff9, #ec38bc)",
+          "conic-gradient(red, #AA3A38, #2F7336)",
+          "conic-gradient(red, #114357, #5c2223)",
+          "conic-gradient(#fed71a, #2775b6, #0f1423)",
+          "conic-gradient(red, yellow, blue)",
+        ],
+      },
+      computed: {
+        shuffledColor() {
+          return this.shuffle(this.color).map((item) => {
+            return item;
+          });
+        },
+      },
+      methods: {
+        shuffle(arr) {
+          for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+          }
+          return arr;
+        },
+        getStyle(item) {
+          return { background: item };
+        },
+      },
+    });
+  </script>
+</html>

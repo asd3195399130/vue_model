@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    #box {
+      width: 1200px;
+      height: 700px;
+      border: 5px solid #ccc;
+      margin: auto;
+    }
+    .lists {
+      list-style: none;
+      width: 1200px;
+      height: 50px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .lists li {
+      width: 390px;
+      height: 40px;
+      /* border: 1px solid red; */
+      background-color: red;
+      color: #fff;
+      text-align: center;
+      line-height: 40px;
+    }
+    button {
+      width: 317px;
+      height: 37px;
+    }
+    .tab-item {
+      width: 100%;
+      height: 93%;
+      border: 1px solid #ccc;
+      margin: auto;
+    }
+    ul {
+      list-style: none;
+    }
+    .news-index-item li::before {
+      content: "";
+      float: left;
+      width: 6px;
+      height: 6px;
+      background: #3b99fc;
+      margin: 15px 20px 0 0;
+    }
+
+    .news-index-item li:nth-child(odd) {
+      float: left;
+      clear: both;
+      width: 544px;
+      margin-right: 60px;
+      height: 36px;
+      line-height: 36px;
+    }
+    .news-index-item li:nth-child(even) {
+      float: right;
+      clear: both;
+      width: 544px;
+      margin-right: 60px;
+      height: 36px;
+      line-height: 36px;
+    }
+    a {
+      float: left;
+      height: 36px;
+      line-height: 36px;
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    span {
+      float: right;
+      color: #999;
+      font-size: 12px;
+    }
+    img {
+      width: 100%;
+      height: 700px;
+    }
+  </style>
+  <body>
+    <div id="box">
+      <div class="new-tab">
+        <ul class="lists">
+          <li :class="{ active: tab === 'latest' }" @click="swithTab('latest')">
+            最新发布
+          </li>
+          <li :class="{ active: tab === 'faq' }" @click="swithTab('faq')">
+            常见问题
+          </li>
+          <li :class="{actove: tab === 'contact'}" @click="swithTab('contact')">
+            信用信息
+          </li>
+        </ul>
+      </div>
+      <div class="tab-item" v-if="tab === 'latest'">
+        <ul class="news-index-item">
+          <li v-for="item in arr" :key="item">
+            <a>{{item.text}}</a>
+            <span>{{item.date}}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-item" v-else-if="tab === 'faq'">
+        <ul class="news-index-item">
+          <li v-for="item in appr" :key="item">
+            <a>{{item.text}}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-item" v-else>
+        <img :src="src" alt="" />
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    new Vue({
+      el: "#box",
+      data: {
+        tab: "latest",
+        arr: [
+          {
+            Id: 1,
+            text: "公告",
+            date: "2023-06-05",
+          },
+          {
+            Id: 2,
+            text: "公告",
+            date: "2022-12-22",
+          },
+          {
+            Id: 3,
+            text: "公告",
+            date: "2022-12-22",
+          },
+          {
+            Id: 4,
+            text: "中国铁路呼和浩特局集团有限公司关于2023年10月25日至11月1日部分旅客列车恢复开行的公告",
+            date: "2023-10-23",
+          },
+          {
+            Id: 5,
+            text: "中国铁路呼和浩特局集团有限公司关于2023年10月22日至11月2日部分旅客列车加开、恢复开行、停运的公告",
+            date: "2023-10-20",
+          },
+          {
+            Id: 6,
+            text: "铁路旅客禁止、限制携带和托运物品目录",
+            date: "2023-12-31",
+          },
+          {
+            Id: 7,
+            text: "候补购票操作说明",
+            date: "2023-02-09",
+          },
+          {
+            Id: 8,
+            text: "关于调整互联网、电话订票起售时间的公告",
+            date: "2023-09-27",
+          },
+          {
+            Id: 9,
+            text: "中国铁路上海局集团有限公司关于2023年10月20日-2023年11月1日增开部分旅客列车的公告",
+            date: "2023-10-20",
+          },
+          {
+            Id: 10,
+            text: "中国铁路成都局集团有限公司关于2023年10月22日至29日部分列车的公告",
+            date: "2023-10-20",
+          },
+        ],
+        appr: [
+          {
+            Id: 1,
+            text: "实名制车票",
+          },
+          {
+            Id: 2,
+            text: "互联网购票",
+          },
+          {
+            Id: 3,
+            text: "随身携带品",
+          },
+          {
+            Id: 4,
+            text: "丢失购票时使用的身份证",
+          },
+          {
+            Id: 5,
+            text: "广深港跨境列车",
+          },
+          {
+            Id: 6,
+            text: "售票窗口购票",
+          },
+          {
+            Id: 7,
+            text: "互联网购票",
+          },
+          {
+            Id: 8,
+            text: "进出站",
+          },
+          {
+            Id: 9,
+            text: "使用居民身份证直接接检票乘车",
+          },
+        ],
+        src: "../image/5269e24ff6c6f5394a14845e6f05df305756.png",
+      },
+      methods: {
+        swithTab(tabname) {
+          this.tab = tabname;
+        },
+      },
+    });
+  </script>
+</html>
