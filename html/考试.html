@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../js/echarts.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .swiper {
+      position: relative;
+      width: 1200px;
+      height: 500px;
+      /* padding-bottom: 41.67%; 宽高比例为 1200:500 */
+      overflow: hidden;
+      margin: auto;
+    }
+    .carousel-list {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .carousel-item {
+      flex-shrink: 0;
+      width: 100%;
+      height: 500px;
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .prev {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 250px;
+      left: 364px;
+    }
+    .next {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 250px;
+      right: 364px;
+    }
+    i::after {
+      content: "<";
+    }
+    .footer-list {
+      width: 1200px;
+      height: 500px;
+      /* border: 1px solid red; */
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+    }
+    .top-lanum {
+      width: 410px;
+      height: 794.7px;
+    }
+    .tit {
+      font-size: 16px;
+      color: #1d1d1d;
+      border-bottom: 1px solid #3d3d3d;
+      font-weight: bold;
+      padding-bottom: 10px;
+      position: relative;
+      /* margin-top: 10px; */
+    }
+    .more {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      border: none;
+      font-weight: normal;
+      font-size: 14px;
+      width: auto;
+      height: auto;
+      line-height: 18px;
+      color: #999;
+      padding: 0;
+    }
+    a {
+      color: #333;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #333;
+    }
+    .bigtitle {
+      margin-top: 10px;
+      color: #005bac;
+      font-size: 16px;
+    }
+    .top-content {
+      margin-top: 10px;
+    }
+    .top-content img {
+      width: 163px;
+      height: 103px;
+      border-radius: 0;
+    }
+    .txt {
+      height: 107px;
+    }
+    .txt p {
+      font-size: 12px;
+      color: #aeaeae;
+      margin-top: 5px;
+      text-align: justify;
+      line-height: 20px;
+    }
+    .m65 {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .mt10 {
+      margin-top: 10px;
+      position: relative;
+    }
+    li s {
+      text-decoration: none;
+      float: right;
+      text-align: right;
+      font-size: 12px;
+      font-family: arial;
+      color: #999;
+    }
+    ul {
+      list-style: none;
+    }
+    li {
+      margin-top: 6px;
+      width: 100%;
+      height: 21px;
+      line-height: 21px;
+      overflow: hidden;
+      padding-right: 40px;
+      /* display: flex; */
+    }
+    li a {
+      font-size: 14px;
+      color: #005bac;
+      float: left;
+    }
+    li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      float: left;
+
+      /* text-align: center; */
+      margin: 4px 4px 0px 0;
+      background: #dcdcdc;
+      clear: both;
+    }
+    .top-lanum-po {
+      height: 280px;
+    }
+    .mt38 {
+      margin-top: 27px;
+    }
+    .mt15 {
+      margin-top: 15px;
+    }
+    #china {
+      width: 500px;
+      height: 500px;
+    }
+  </style>
+  <body>
+    <div id="box">
+      <!-- 轮播图 -->
+      <div class="swiper">
+        <div
+          class="carousel-list"
+          :style="{ transform: 'translateX(' + slideOffset + 'px)' }">
+          <div class="carousel-item" v-for="(item, index) in src" :key="index">
+            <img :src="item" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <button @click="prev" class="prev">
+          <i></i>
+        </button>
+        <button @click="next" class="next">></button>
+      </div>
+      <div class="footer-list">
+        <div class="top-lanum">
+          <div class="top-lanum-po">
+            <h2 class="tit">
+              <a href="#">集团要闻</a>
+              <a href="#" class="more">更多</a>
+            </h2>
+            <div class="mt20">
+              <h2 class="bigtitle">
+                山西省委常委，太原市委书记韦韬会见王健林董事长
+              </h2>
+              <div class="m65">
+                <div class="top-content">
+                  <img
+                    src="https://image.wanda.cn/uploadfile/2023/1025/20231025095529489.jpg"
+                    alt="" />
+                </div>
+                <div class="txt">
+                  <p>
+                    10月24日，山西省委常委、太原市委书记韦韬在太原会见王健林董事长并举行座谈。在太原期间，王健林董事长先后考察太原双塔公园、太原晋源晋阳湖等项目。
+                  </p>
+                </div>
+                <div></div>
+              </div>
+              <div class="mt10">
+                <ul>
+                  <li v-for="(item, index) in text" :key="index">
+                    <a href="#">{{item.title}}</a>
+                    <s>{{item.date}}</s>
+                    <div style="clear: both"></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-lanum">
+            <h2 class="tit mt38">
+              <a href="#">最新动态</a>
+              <a href="#" class="more">更多</a>
+            </h2>
+            <div class="mt15">
+              <ul>
+                <li v-for="(item, index) in newdata" :key="index">
+                  <a href="#">{{item.txt}}</a>
+                  <s>{{item.time}}</s>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="echart-box">
+          <h2 class="tit">
+            <a href="#">万达产业</a>
+            <a href="#" class="more">更多</a>
+          </h2>
+          <div id="china"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    new Vue({
+      el: "#box",
+      data() {
+        return {
+          currentIndex: 0,
+          slideOffset: 0,
+          src: [],
+          slideWidth: 1200, // 轮播图宽度
+          text: [
+            {
+              title: "万达酒店全面开启飞猪11·11大促",
+              date: "10-25",
+            },
+            {
+              title: "王健林董事长与山西省委常委、太原市委书记韦韬工作会",
+              date: "10-19",
+            },
+            {
+              title: "王健林董事长会见洛阳市委书记江凌",
+              date: "10-20",
+            },
+          ],
+          newdata: [
+            {
+              txt: "万达酒店飞猪双11大促首日销售超1亿元  位居行业第一",
+              time: "10-27",
+            },
+            {
+              txt: "万达电影抗美援朝纪念日举办特别观影活动",
+              time: "10-27",
+            },
+            {
+              txt: "商管哈尔滨公司开展致敬抗美援朝主题活动",
+              time: "10-27",
+            },
+            {
+              txt: "商管东区举办“致敬城市美容师”公益活动",
+              time: "10-27",
+            },
+          ],
+        };
+      },
+      mounted() {
+        this.getdata();
+      },
+      methods: {
+        getdata() {
+          $.ajax({
+            url: "http://47.94.4.201/index.php/index/index/getImgList",
+            type: "get",
+            dataType: "json",
+            success: (res) => {
+              this.src = res.data;
+              //   this.slideWidth = this.children[0].offsetWidth;
+              console.log(this);
+            },
+          });
+        },
+        prev() {
+          console.log(666);
+          //   console.log(this.srcindex);
+          if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.slideOffset += this.slideWidth;
+          }
+        },
+        next() {
+          //   console.log(777);
+          if (this.currentIndex < this.src.length - 1) {
+            this.currentIndex++;
+            this.slideOffset -= this.slideWidth;
+          }
+        },
+      },
+    });
+  </script>
+  <script>
+    var myChart = echarts.init(document.getElementById("china"));
+    var uploadedDataURL = "../json/94c2814c-5749-43b4-b5b4-d7ab32ad5155.json";
+    const mapData = [
+      { name: "北京市", value: Math.round(Math.random() * 500) },
+      { name: "天津市", value: Math.round(Math.random() * 500) },
+      { name: "上海市", value: Math.round(Math.random() * 500) },
+      { name: "重庆市", value: Math.round(Math.random() * 500) },
+      { name: "河北省", value: Math.round(Math.random() * 500) },
+      { name: "河南省", value: Math.round(Math.random() * 500) },
+      { name: "云南省", value: Math.round(Math.random() * 500) },
+      { name: "辽宁省", value: Math.round(Math.random() * 500) },
+      { name: "黑龙江省", value: Math.round(Math.random() * 500) },
+      { name: "湖南省", value: Math.round(Math.random() * 500) },
+      { name: "安徽省", value: Math.round(Math.random() * 500) },
+      { name: "山东省", value: Math.round(Math.random() * 500) },
+      { name: "新疆维吾尔自治区", value: Math.round(Math.random() * 500) },
+      { name: "江苏省", value: Math.round(Math.random() * 500) },
+      { name: "浙江省", value: Math.round(Math.random() * 500) },
+      { name: "江西省", value: Math.round(Math.random() * 500) },
+      { name: "湖北省", value: Math.round(Math.random() * 500) },
+      { name: "广西壮族自治区", value: Math.round(Math.random() * 500) },
+      { name: "甘肃省", value: Math.round(Math.random() * 500) },
+      { name: "山西省", value: Math.round(Math.random() * 500) },
+      { name: "内蒙古自治区", value: Math.round(Math.random() * 500) },
+      { name: "陕西省", value: Math.round(Math.random() * 500) },
+      { name: "吉林省", value: Math.round(Math.random() * 500) },
+      { name: "福建省", value: Math.round(Math.random() * 500) },
+      { name: "贵州省", value: Math.round(Math.random() * 500) },
+      { name: "广东省", value: Math.round(Math.random() * 500) },
+      { name: "青海省", value: Math.round(Math.random() * 500) },
+      { name: "西藏自治区", value: Math.round(Math.random() * 500) },
+      { name: "四川省", value: Math.round(Math.random() * 500) },
+      { name: "宁夏省", value: Math.round(Math.random() * 500) },
+      { name: "海南省", value: Math.round(Math.random() * 500) },
+      { name: "台湾省", value: Math.round(Math.random() * 500) },
+      { name: "香港特别行政区", value: Math.round(Math.random() * 500) },
+      { name: "澳门特别行政区", value: Math.round(Math.random() * 500) },
+    ];
+
+    $.get(uploadedDataURL, function (getJson) {
+      console.log("getJson", getJson);
+      echarts.registerMap("china", getJson);
+      option = {
+        //数据分段
+        visualMap: {
+          show: false,
+          min: 0,
+          max: 1000,
+          left: "left",
+          top: "bottom",
+          text: ["高", "低"],
+          calculable: false,
+          orient: "horizontal",
+          inRange: {
+            color: ["#dcecfc", "#006edd"],
+            symbolSize: [30, 100],
+          },
+        },
+        // 悬浮窗
+        tooltip: {
+          trigger: "item",
+          backgroundColor: "rgba(0,0,0,0.8)", //设置背景图片 rgba格式
+          color: "#fff",
+          borderWidth: "1", //边框宽度设置1
+          borderColor: "gray", //设置边框颜色
+          textStyle: {
+            color: "#fff", //设置文字颜色
+          },
+          extraCssText: "width:120px;height:40px", // 设置提示框宽高等css样式
+          formatter: function (params) {
+            return `${params.name}: <br /> ${params.value || 0}辆`;
+          },
+        },
+        geo: {
+          // 这个是重点 —— 这里设置为地图的阴影
+          map: "china", // 表示中国地图
+          roam: false, // 禁止拖拽
+          label: {
+            // 标志信息
+            show: false, // 是否显示对应地名
+          },
+          silent: true, // 禁止hover效果
+          zoom: 1.4, // 地图比例
+          aspectScale: 0.9, // 比例
+          center: [105.194115019531, 36.582111640625], // 地图中心位置， 此处的纬度与下面的center相差1度是形成阴影的距离，可自己随意调整
+          itemStyle: {
+            areaColor: "#1c84f4", //地图阴影的颜色
+            // areaColor: {
+            //   image: img, // 背景图
+            //   repeat: 'repeat-x', // 是否平铺，可以是 'repeat-x', 'repeat-y', 'no-repeat'
+            // },
+            borderColor: "#1c84f4", // 省份边框颜色
+            borderWidth: 0.2, // 省份边框宽度
+            shadowColor: "#fff", // 省份边框阴影rgba(100,255,238,0.5)
+            shadowBlur: 5, // 省份边框聚焦
+          },
+          emphasis: {
+            show: false,
+          },
+          //地图的阴影不显示南沙诸岛
+          regions: [
+            {
+              name: "南海诸岛",
+              itemStyle: {
+                // 隐藏地图
+                normal: {
+                  opacity: 0, // 为 0 时不绘制该图形
+                },
+                emphasis: {
+                  opacity: 0,
+                },
+              },
+              label: {
+                show: false, // 隐藏文字
+              },
+            },
+          ],
+        },
+        //配置属性
+        series: [
+          {
+            type: "map",
+            map: "china",
+            zoom: 1.4,
+            aspectScale: 0.9, // 比例
+            zlevel: 1, // 设置地图的层级，将该地图上移（类似z-index）
+            emphasis: {
+              // 鼠标hover是否显示内容，可自己调节
+              label: {
+                show: true,
+                color: "#fff",
+              },
+              itemStyle: {
+                show: true,
+                color: "#00114F", // 高亮文字颜色
+                borderColor: "#f43c24", // 高亮边框颜色
+                areaColor: "#f47c84", //高亮区域颜色
+              },
+            },
+            label: {
+              // 地图标注
+              show: true, // 是否显示对应地名
+              //由于鼠标放在地图上时，省份字体颜色会有一个从默认色到红色的颜色跳动，所以即使normal时省份字体不显示，也设置为红色，视觉优化颜色跳动问题
+              color: "#000",
+            },
+            itemStyle: {
+              borderColor: "#fff", // 省份边框颜色
+              borderWidth: 1.5, // 省份边框宽度
+              shadowColor: "#fff", // 省份边框阴影rgba(100,255,238,0.5)
+              shadowBlur: 5, // 省份边框聚焦
+              areaColor: "#dcecfc",
+            },
+            center: [105.194115019531, 35.582111640625], // 设置地图中心
+            data: mapData,
+          },
+        ],
+      };
+      myChart.setOption(option);
+    });
+  </script>
+</html>

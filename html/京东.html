@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: content-box;
+    }
+    body {
+      font: 12px/150% tahoma, arial, Microsoft YaHei, Hiragino Sans GB,
+        "\u5b8b\u4f53", sans-serif;
+    }
+    #box {
+      width: 990px;
+      height: 1000px;
+      border: 1px solid #ccc;
+      margin: auto;
+    }
+    .cart_filter-bar {
+      margin-top: 10px;
+      position: relative;
+      z-index: 100;
+      width: 100%;
+      height: 40px;
+    }
+    .switch-cart {
+      float: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .switch-cart-item {
+      float: left;
+      position: relative;
+      font-weight: 700;
+      font-size: 16px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      padding: 0 0 10px;
+      cursor: pointer;
+      margin: 5px 30px 0 0;
+    }
+    a {
+      text-decoration: none;
+    }
+    .switch-cart-item a em {
+      color: #e2231a;
+    }
+    .number {
+      color: #e2231a;
+      font-size: 14px;
+      margin-left: 5px;
+    }
+    .cart-store {
+      float: right;
+      position: relative;
+      z-index: 5;
+      margin-bottom: 10px;
+      padding-left: 122px;
+    }
+    .label {
+      float: left;
+      line-height: 26px;
+    }
+    #jdarea {
+      position: relative;
+      float: left;
+      z-index: 3;
+      height: 26px;
+      cursor: default;
+      margin: 0;
+    }
+    .cart-thead {
+      display: block;
+      height: 32px;
+      line-height: 32px;
+      margin: 0 0 10px;
+      padding: 5px 0;
+      background: #f3f3f3;
+      border: 1px solid #e9e9e9;
+      border-top: 0;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .t-goods {
+      width: 208px;
+    }
+    .t-props {
+      width: 140px;
+      height: 32px;
+      padding: 0 10px 0;
+    }
+    .t-price {
+      width: 120px;
+      padding-right: 50px;
+      text-align: right;
+    }
+    .t-quantity {
+      width: 80px;
+      text-align: center;
+    }
+    .t-sum {
+      width: 100px;
+      padding-right: 40px;
+      text-align: right;
+    }
+    .t-action {
+      width: 75px;
+    }
+    .t-checkbox {
+      height: 18px;
+      line-height: 18px;
+      padding-top: 7px;
+      width: 122px;
+      padding-left: 11px;
+    }
+    .cart-checkbox {
+      position: relative;
+      z-index: 3;
+      float: left;
+      margin-right: 5px;
+    }
+    .jdcheckbox {
+      float: none;
+      position: relative;
+      z-index: 5;
+      vertical-align: middle;
+      margin: 0 3px 0 0;
+      padding: 0;
+    }
+    .shop {
+      height: 30px;
+      line-height: 30px;
+      padding-left: 11px;
+    }
+    .vendor-icon {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkVCNERFNjNENDNGNzExRTk5RjEwRkU4NUY1RTg2OTQ5IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkVCNERFNjNFNDNGNzExRTk5RjEwRkU4NUY1RTg2OTQ5Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6REQ4RjFDQkU0M0Y3MTFFOTlGMTBGRTg1RjVFODY5NDkiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RUI0REU2M0M0M0Y3MTFFOTlGMTBGRTg1RjVFODY5NDkiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6DvPuLAAABvUlEQVR42qRTO0gDQRCduYiihZ2FrQgWNgGxExtBsPLTBDHEQrQQC01s0qSwSZVEUOwVQWKhsQja2EgqRbARG7EWIUUsPEGS9b3zTvbOX+HAHbPz3puZnd1VidhU0YyKkXkjMoJlnx9+UJGaqOxW0nph8zVwZjZNf7MpRbgT+E4B3KjKLTFjZBAJ4wEWi0n6aFXvPxOwKkjnUTBqdhEkH2M3zuyO6Yb4MBB3tMuT/GDEyCGXGmod15V1BBpdnZJE9irWKbsiv2BNjBxyqaHWwd4S2Ef5YFmfSXJicsbMkwXzCPIdP/peNWDkkEuNpwX45qgk1ZFrgsH+Wdm0ZMgbFDA77g0WWMvIfhv8OvbTw2myPVQaZgVfEBomu3hxpYoBLvrHV3fwu0Qr4xSgkxwIV9NFkyDZFjJGDMItTh/V56jV4AgBrFUyus0WW03J+hfJvjA1zCDPQkzG9nmUH7evYDY4CwLyh5FDLjWhm8gAqmZ5bbkVe3AWZwWcEkR5dJsLJQgm7LefssJ8B2W0v8cj5Ykdp7X85S1Ep+2+Shxgr/8OlnyocZLRgW8f02/mJXSlRB+tL4QSGJT4j70LMABU2/IqHilakgAAAABJRU5ErkJggg==)
+        0 0 no-repeat;
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+      position: relative;
+      vertical-align: middle;
+      top: -1px;
+    }
+    .shop-text {
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+      max-width: 260px;
+      overflow: hidden;
+      vertical-align: middle;
+      height: 30px;
+      line-height: 30px;
+      font-weight: 700;
+    }
+    .item-list {
+      width: 990px;
+      height: 122px;
+      border: 1px solid #f1f1f1;
+      border-top: 2px solid #aaa;
+      background: #fff;
+    }
+    .item {
+      position: relative;
+      border-top: 1px solid #c5c5c5;
+      line-height: 20px;
+      background: #fff;
+      padding: 0 0 1px 40px;
+      clear: both;
+    }
+    .cell {
+      float: left;
+      padding: 15px 0 10px;
+    }
+    .p-checkbox {
+      z-index: 3;
+      width: 30px;
+      min-height: 10px;
+      margin-left: 10px;
+    }
+    p-goods {
+      width: 300px;
+    }
+    .goods-item {
+      display: block;
+    }
+    .item-form {
+      /* display: inline-block; */
+      display: block;
+    }
+    .p-img {
+      position: relative;
+      float: left;
+      width: 80px;
+      height: 80px;
+      border: 1px solid #eee;
+      margin-right: 10px;
+      background: #fff;
+      padding: 0;
+      text-align: center;
+      overflow: visible;
+    }
+    .p-name {
+      width: 202px;
+      height: 40px;
+      line-height: 20px;
+      overflow: hidden;
+    }
+    .p-msg {
+      width: 300px;
+      height: 60px;
+    }
+    .jd-service-icon {
+      display: inline-block;
+      width: 17px;
+      height: 20px;
+      overflow: hidden;
+      vertical-align: middle;
+      background: url(data:image/png;base64,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)
+        0 0 no-repeat;
+    }
+    .p-props {
+      width: 150px;
+      min-height: 10px;
+      line-height: 20px;
+      overflow: hidden;
+      /* margin-left: 40px; */
+      padding: 15 0 0 20px;
+    }
+    .props-text {
+      width: 130px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      cursor: default;
+    }
+    .p-price {
+      position: relative;
+      width: 150px;
+      padding-right: 40px;
+      text-align: right;
+      outline: none;
+      margin-top: 10px;
+    }
+    .p-quantity {
+      width: 84px;
+    }
+    .cart-number {
+      width: 80px;
+      border: 0;
+      overflow: hidden;
+    }
+    /* .p-quantity .quantity {
+      display: flex;
+    } */
+    /* .p-quantity .quantity button:disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    } */
+    .p-quantity .quantity button {
+      border-width: 1px;
+      background: #f1f1f1;
+      width: 17px;
+      height: 20px;
+      line-height: 16px;
+      vertical-align: middle;
+    }
+    .cart-icon-subt::before {
+      content: "-";
+    }
+    .cart-input {
+      width: 80px;
+    }
+    .cart-input input {
+      position: static;
+      float: left;
+      outline: 0;
+      text-align: center;
+      box-sizing: border-box;
+      height: 20px;
+      color: #232326;
+      border: 1px solid #cbcbcb;
+      background: #fff;
+      line-height: 18px;
+      vertical-align: middle;
+      padding: 0;
+    }
+    .cart-input .cart-input-o {
+      border-width: 1px 0;
+      width: 46px;
+    }
+    .cart-icon-add::before {
+      content: "+";
+    }
+    button {
+      position: static;
+      float: left;
+      outline: 0;
+      text-align: center;
+      box-sizing: border-box;
+      height: 20px;
+      color: #232326;
+      border: 1px solid #cbcbcb;
+      background: #fff;
+      line-height: 18px;
+      vertical-align: middle;
+      padding: 0;
+    }
+    .ac {
+      color: #aaa;
+      text-align: center;
+    }
+    .p-sum {
+      width: 100px;
+      padding-right: 40px;
+      text-align: right;
+      margin-top: 15px;
+      font-family: verdana;
+    }
+    .p-ops {
+      width: 75px;
+    }
+    .p-ops-item {
+      color: #666;
+      display: block;
+    }
+    a:hover {
+      cursor: pointer;
+      color: #e2231a;
+    }
+    .footer-cart {
+      position: fixed;
+      transform: translateZ(0px);
+      top: auto;
+      bottom: 0px;
+    }
+    .cart-footer {
+      width: 100%;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 -1px 8px;
+    }
+    .cart-floatbar {
+      position: relative;
+      height: 52px;
+      z-index: 99;
+    }
+    .cart-toolbar {
+      border-color: #fff;
+      height: 50px;
+      width: 988px;
+      border: 1px solid #f0f0f0;
+      background: #fff;
+      position: relative;
+      margin: 0 auto;
+    }
+    .left {
+      width: 363px;
+      height: 50px;
+    }
+    .select-all {
+      float: left;
+      height: 50px;
+      *width: 60px;
+      line-height: 50px;
+      padding: 0 0 0 9px;
+      white-space: nowrap;
+    }
+    .select-all .jdcheckbox {
+      margin: 5px 3px 0 0;
+      display: inline-block;
+      vertical-align: text-bottom;
+    }
+    .operction {
+      float: "left";
+      height: 50px;
+      line-height: 50px;
+    }
+    .operction a {
+      float: left;
+      margin-left: 10px;
+      color: #666;
+    }
+    .left a:hover {
+      color: #e2231a;
+    }
+    .right {
+      position: absolute;
+      height: 52px;
+      right: 0;
+      top: -1px;
+      width: 670px;
+      max-width: 670px;
+    }
+    .right a:hover {
+      color: #fff;
+    }
+    .combine {
+      float: right;
+      width: 670px;
+    }
+    .btn-area {
+      float: right;
+      height: 50px;
+    }
+    .commit-submit-btn {
+      display: block;
+      position: relative;
+      width: 94px;
+      height: 52px;
+      line-height: 52px;
+      color: #fff;
+      text-align: center;
+      font-size: 18px;
+      background: #e54346;
+      cursor: pointer;
+    }
+    .price-sum {
+      position: relative;
+      float: right;
+      height: 50px;
+      width: auto;
+      margin: 7px 20px 0px 10px;
+    }
+    .price-sum {
+      float: right;
+    }
+    .txt {
+      width: 50px;
+      text-align: right;
+      color: #999;
+      display: inline-block;
+    }
+
+    .priceshow em {
+      font-size: 16px;
+      color: #e2231a;
+      font-family: verdana;
+      font-weight: 700;
+    }
+    .m15 {
+      vertical-align: text-bottom;
+      display: inline-table;
+      width: 12px;
+      height: 18px;
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAASCAYAAABvqT8MAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTdBMTA0QzQ0RkY2MTFFNkIzNzZCMUM2MzY2OTJEQTEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTdBMTA0QzU0RkY2MTFFNkIzNzZCMUM2MzY2OTJEQTEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxN0ExMDRDMjRGRjYxMUU2QjM3NkIxQzYzNjY5MkRBMSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxN0ExMDRDMzRGRjYxMUU2QjM3NkIxQzYzNjY5MkRBMSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PoKsSa8AAAEzSURBVHjalNK/LwRBGMbx3c2RK5wGjeQKiY5agZKKqCQnEY1SQzRX8BeISiQKhShFI/HjCiFaiUZcQXRqOfEjikP4PsmzstncHjfJ53Zu552ZnXfesF7pCVppUaLfgRVc4xPPuMQS8nFQ6B0GcIi+jIWrmMCDduhExcH3KKHXZnCLQZxopxw/iyjiDsOoJVbewzHOMIR57TDlwXIqOG5vWHZ/Vmd4pNNltYwztKGuce3w5Zf5Jtns9vMjcurUpptMKPl5pU+adEpfMIqbVPA4jtCOsch/DpxeZaM/Eaz72Xfwpsbjm57DKXSL21C6C9hxBaz5xn9vOvAq5xjBq5Og7GxhoVEtKW2rzlrBwe/YSB4olzrgRYN3mdUatyd8m6o2/GvCrs+gNK97YpAu73+3HwEGAAIPQ7XXwQUVAAAAAElFTkSuQmCC)
+        0 0 no-repeat;
+    }
+    .price-tipsbox-new {
+      right: -85px;
+      display: none;
+      position: absolute;
+      top: -42px;
+      line-height: 1;
+      box-shadow: 1px 3px 15px -1px hsla(0, 0%, 48.6%, 0.5);
+      padding: 10px 15px;
+      background: #fff !important;
+      border-color: #ddd !important;
+    }
+    .amount-sum {
+      float: right;
+      color: #999;
+      line-height: 20px;
+      cursor: pointer;
+    }
+    .amount-sum em {
+      color: #e2231a;
+      font-weight: 700;
+      font-family: Verdana;
+      margin: 0 3px;
+    }
+    .up {
+      display: inline-block;
+      width: 9px;
+      height: 5px;
+      background: url(https://misc.360buyimg.com/user/cart/css/i/cart-icons-202004.png) -45px -91px
+        no-repeat;
+      overflow: hidden;
+      vertical-align: middle;
+      margin: -5px 0px 0px 5px;
+      transition: all 0.2 ease-in 0s;
+    }
+    .cart-tbody:hover {
+      background-color: #fef4e8;
+    }
+    .cart-tbody .item-list:hover {
+      background-color: #fef4e8 !important;
+    }
+    .select {
+      background-color: #fef4e8;
+    }
+  </style>
+  <body>
+    <div id="box">
+      <div class="cart-filter-bar">
+        <ul class="switch-cart">
+          <li class="switch-cart-item">
+            <a href="#">
+              <em>全部商品</em>
+              <span class="number">5</span>
+            </a>
+          </li>
+        </ul>
+        <div class="cart-store">
+          <span class="label">配送至：</span>
+          <div id="jdarea" class="ui-area">
+            <select name="" id="">
+              <option value="洛阳市洛龙区阳光小区3单元">
+                洛阳市洛龙区阳光小区3单元
+              </option>
+            </select>
+          </div>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+      <div class="cart-thead">
+        <div class="column t-checkbox">
+          <div class="cart-checkbox">
+            <input
+              type="checkbox"
+              name="select-all"
+              class="jdcheckbox"
+              :checked="this.ment"
+              clstag="pageclick|keycount|Shopcart_CheckAll|0" />
+          </div>
+          全选
+        </div>
+        <div class="column t-goods">商品</div>
+        <div class="column t-props">&nbsp;</div>
+        <div class="column t-price">单价</div>
+        <div class="cloumn t-quantity">数量</div>
+        <div class="column t-sum">小计</div>
+        <div class="column t-action">操作</div>
+      </div>
+      <div class="cart-tbody" v-for="(item, index) in lists" :key="item.id" :class={"select":item.status}>
+        <div class="shop">
+          <div class="cart-checkbox">
+          <input
+                type="checkbox"
+                v-model="item.status"
+                @change="calculateTotalPrice" />
+          </div>
+          <span class="shop-text">
+            <a> {{item.shoptext}}</a>
+            <i class="vendor-icon"></i>
+          </span>
+        </div>
+        <div class="item-list" :class={"select":item.status}>
+          <div class="item-item">
+            <div class="item-form">
+              <div class="cell p-checkbox">
+                <div class="cart-checkbox">
+                  <input
+                    type="checkbox"
+                    name="checkItem"
+                    class="jdcheckbox"
+                    :checked="item.status"
+                    clstag="pageclick|keycount|Shopcart_CheckProd|0_100027011644" />
+
+                  <span class="line-circle"></span>
+                </div>
+              </div>
+              <div class="cell p-goods">
+                <div class="goods-item">
+                  <div class="p-img">
+                    <img :src="item.src" alt="" />
+                  </div>
+                  <div class="p-msg">
+                    <div class="p-name">
+                      <a>{{item.goods}}</a>
+                    </div>
+                    <div class="p-extend">
+                      <span class="promise ftx-03 jd-service">
+                        <span class="jd-service-icon"> </span>
+                        <span
+                          data-tips="选服务"
+                          class="ftx-03 jd-service jd-service-text"
+                          clstag="pageclick|keycount|Shopcart_ExtendedService">
+                          选服务
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="cell p-props">
+                <div class="props-text">
+                  <span class="">{{item.propstext}}</span>
+                </div>
+                <div class="props-text">
+                  <span class="">{{item.propstnt}}</span>
+                </div>
+              </div>
+              <div class="cell p-price">
+                <span class="p-price-cont">{{item.price | pricenum}}</span>
+              </div>
+              <div class="cell p-quantity">
+                <div class="cell p-quantity">
+                  <div class="cart-number quantity">
+                    <button
+                      class="cart-number-dec is-disabled"
+                      @click="minus(index)">
+                      <i class="cart-icon-subt"></i>
+                    </button>
+                    <div class="cart-input">
+                      <input
+                        class="cart-input-o"
+                        min="1"
+                        max="200"
+                        v-model="item.number" />
+                    </div>
+                    <button class="cart-number-inc" @click="add(index)">
+                      <i class="cart-icon-add"></i>
+                    </button>
+                  </div>
+                  <p class="ac ftx03">有货</p>
+                </div>
+              </div>
+              <div class="cell p-sum">
+                <strong>{{item.sum | pricenum}}</strong>
+              </div>
+              <div class="cell p-ops">
+                <a class="p-ops-item" @click="del(item.Id)">删除</a>
+                <a class="p-ops-item">移入关注</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-cart cart-footer">
+        <div class="cart-floatbar">
+          <div class="cart-toolbar">
+            <div class="options-box">
+              <div class="left">
+                <div class="select-all">
+                  <input
+                    type="checkbox"
+                    class="jdcheckbox"
+                    clstag="pageclick|keycount|Shopcart_CheckAll|0" />
+                  全选
+                </div>
+                <div class="operction">
+                  <a href="#">删除选中商品</a>
+                  <a href="#">移入关注</a>
+                  <a href="#">
+                    <strong>清理购物车</strong>
+                  </a>
+                </div>
+              </div>
+              <div class="right">
+                <div class="combine">
+                  <div class="btn-area">
+                    <a href="" class="commit-submit-btn"> <b>去结算</b></a>
+                  </div>
+                  <div class="price-sum">
+                    <div class="price-sum-amount">
+                      <div class="price-show">
+                        <span class="txt">总价：</span>
+                        <span class="priceshow">
+                          <em>￥{{num}}</em>
+                        </span>
+                        <b class="m15"></b>
+                        <div class="price-tipsbox-new">
+                          <div class="ui-tips-main">不含运费及送装服务费</div>
+                          <span class="price-tipsbox-arrow"></span>
+                        </div>
+                      </div>
+                      <span class="amount-sum">
+                        已选择
+                        <em>0</em>
+                        件商品
+                        <b class="up"></b>
+                      </span>
+                    </div>
+                  </div>
+                  <div style="clear: both"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    new Vue({
+      el: "#box",
+      data() {
+        return {
+          ment: false,
+          num: "0.00",
+          lists: [
+            {
+              Id: 1,
+              shoptext: "索皇（SUOHUANG）京东自营旗舰店 ",
+              src: "https://img10.360buyimg.com/n0/s80x80_jfs/t1/176812/23/39309/204904/65333bb8F757b881f/9562a5dc136d1cea.jpg.dpg",
+              propstext: "黑色旗舰版【可调速，六档高度】",
+              propstnt: "",
+              goods:
+                "索皇（SUOHUANG）S6 调速笔记本散热器（电脑支架/笔记本散热架/散热垫/可调速/散热底座/17英寸以下）",
+              price: "33.80",
+              number: 1,
+              sum: "33.80",
+              status: false,
+            },
+            {
+              Id: 2,
+              shoptext: "华硕京东自营官方旗舰店",
+              src: "https://img30.360buyimg.com/n0/s80x80_jfs/t1/135626/17/39436/75849/65379cfdFc6a724e4/d2736d8cea46bcc3.jpg.dpg",
+              propstext: "无畏15 2023蓝 ",
+              propstnt: "144Hz高刷屏 i5-13500H 16G 512G",
+              goods:
+                "华硕无畏15 2023 13代酷睿i5标压 15.6英寸144Hz高刷屏轻薄高性能笔记本电脑(i5-13500H 16G 512G 高色域)蓝",
+              price: "4100" ,
+              number: 1,
+              sum: "4100",
+              status: false,
+            },
+            {
+              Id: 3,
+              shoptext: "南国书香京东自营官方旗舰店",
+              src: "https://img14.360buyimg.com/n0/s80x80_jfs/t1/165949/15/39477/187664/65379143Fe8fca9cd/a041be61243c1432.jpg.dpg",
+              propstext: "初学者正楷练字套装（零基础）",
+              propstnt: "",
+              number: 1,
+              goods:
+                "南国书香 凹槽练字帖成人楷书字帖高中生硬笔书法速成小学生正楷钢笔临摹控笔训练初中生行楷描红练习反复用",
+              price: "8.90",
+              number: 1,
+              sum: "38.90",
+               status: false,
+            },
+            {
+              Id: 4,
+              shoptext: "灵蛇京东自营旗舰店",
+              src: "https://img14.360buyimg.com/n0/s80x80_jfs/t1/131301/34/32949/18753/646c6158Fee07f031/750fd287c12e2041.jpg.dpg",
+              propstext: "po1黑色【250*210*2】小号",
+              propstnt: "",
+              goods:
+                "灵蛇（LINGSHE）鼠标垫 250*210*2mm家用办公游戏鼠标垫 办公鼠标垫小号 精密包边防滑可水洗P01黑色",
+              price: "2.69",
+              number: 1,
+              sum: "2.69",
+              status: false,
+            },
+            {
+              Id: 5,
+              shoptext: "欲品方便食品专营店",
+              src: "https://img11.360buyimg.com/n0/s80x80_jfs/t1/223738/10/25784/219051/64913ebcFfbc52d03/920f98c797910133.jpg.dpg",
+              propstext: "四川红烧牛肉（10袋））",
+              propstnt: "",
+              number: 1,
+              goods:
+                "白象大骨面精炖装口味可选 袋装泡面方便面整箱懒人免煮速食夜宵 四川红烧牛肉（10袋）",
+              price: "16.00",
+              sum: "16.00",
+              status: false,
+              totalPrice:11,
+            },
+          ],
+        };
+      },
+      computed: {
+        
+      },
+      filters: {
+        pricenum(x) {
+          return "￥" + x;
+        },
+      },
+      methods: {
+        add(index) {
+          console.log(index);
+           this.lists[index].number++;
+           this.lists[index].sum = (
+            Number(this.lists[index].number) * Number(this.lists[index].price)
+          ).toFixed(2);
+         
+          // this.lists[index].sum = (
+          //   Number(this.lists[index].number) * Number(this.lists[index].price)
+          // ).toFixed(2);
+        },
+        del(id) {
+          console.log(id);
+          const result = confirm("确定要删除吗");
+          if (result) {
+            this.lists = this.lists.filter((item) => {
+              return item.Id != id;
+            });
+          }
+        },
+ 
+   calculateTotalPrice() {
+            this.num = this.lists
+              .filter((item) => item.status)
+              .reduce((total, item) => total + item.sum * item.number, 0).toFixed(2);
+          },
+        minus(index) {
+          console.log(6666);
+          // Number(this.num++).toFixed(2)
+          if (this.lists[index].number > 1) {
+            this.lists[index].number--;
+            this.lists[index].sum = (
+              Number(this.lists[index].number) * Number(this.lists[index].price)
+            ).toFixed(2);
+          } else {
+            alert("不能在减少了");
+          }
+        },
+        //全选
+        orststus(index) {
+          if (this.ment === true) {
+            this.lists[index].status = !this.lists[index].status;
+            this.lists[index].state = !this.lists[index].state;
+            this.ment = false;
+          } else {
+            this.lists[index].status = !this.lists[index].status;
+            this.lists[index].state = !this.lists[index].state;
+            for (var i = 0; i < this.lists.length; i++) {
+              if (this.lists[i].status == false) {
+                this.ment = false;
+              } else {
+                this.ment = true;
+              }
+            }
+          }
+        },
+      },
+      selectedCount(){
+        let count =0
+        
+      }
+      //
+    });
+  </script>
+</html>

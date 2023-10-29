@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    table {
+      width: 1200px;
+      border-collapse: collapse;
+      margin: auto;
+    }
+    thead tr {
+      background: linear-gradient(
+        to right,
+        #33a0d6,
+        #53adca,
+        #5bb0c8,
+        #6ab6c2,
+        #57aec7,
+        #74babf
+      );
+    }
+    tr th {
+      height: 51px;
+    }
+    tr th:nth-child(1) {
+      width: 50px;
+      height: 50px;
+    }
+    tr td {
+      text-align: center;
+      height: 51px;
+    }
+    tr td:nth-child(1) {
+      width: 51px;
+    }
+    a {
+      text-decoration: none;
+    }
+    button {
+      width: 94px;
+      height: 38px;
+      border: none;
+      color: #ffffff;
+      background-color: #0072ff;
+    }
+    tr:hover {
+      color: #ffffff;
+      background-color: rebeccapurple !important;
+    }
+  </style>
+  <body>
+    <div id="box">
+      <table border="1">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>名称</th>
+            <th>链接</th>
+            <th>描述</th>
+            <th>年龄</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in mesg" :key="index" v-cust="index">
+            <td>{{item.Id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.link}}</td>
+            <td>{{item.refer}}</td>
+            <td>{{item.age}}</td>
+            <td><a href="#" @click="del(index)">删除</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <button @click="sortTable">排序</button>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    new Vue({
+      el: "#box",
+      directives: {
+        cust(v, index) {
+          if (index.value % 2 == 0) {
+            v.style.backgroundColor = "#c21f30";
+          } else {
+            v.style.backgroundColor = "#ffa60f";
+          }
+        },
+      },
+      data: {
+        mesg: [
+          {
+            Id: 1,
+            name: "哔哩哔哩",
+            age: 16,
+            link: "https://www.bilibili.com/",
+            refer: "bilibili",
+          },
+          {
+            Id: 2,
+            name: "今日头条",
+            age: 18,
+            link: "https://www.toutiao.com/",
+            refer: "bytedance",
+          },
+          {
+            Id: 3,
+            name: "百度",
+            age: 19,
+            link: "https://www.baidu.com/",
+            refer: "daidu",
+          },
+          {
+            Id: 4,
+            name: "新浪微博",
+            age: 20,
+            link: "https://weibo.com/",
+            refer: "weibo",
+          },
+          {
+            Id: 5,
+            name: "腾讯网",
+            age: 21,
+            link: "https://www.qq.com/",
+            refer: "tencent",
+          },
+        ],
+        sorttype: "asc",
+      },
+      methods: {
+        sortTable() {
+          if (this.sorttype === "asc") {
+            this.mesg.sort((a, b) => a.age - b.age);
+            this.sorttype = "desc";
+          } else {
+            this.mesg.sort((a, b) => b.age - a.age);
+            this.sorttype = "asc";
+          }
+        },
+        del(index) {
+          this.mesg.splice(index, 1);
+        },
+      },
+    });
+  </script>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" />
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.compat.min.css"
+      rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="app">
+      <img
+        class="imsj"
+        src="https://img10.360buyimg.com/img/jfs/t1/199023/6/37257/12539/65361a20F9cac6be6/80afe4b365931a5d.jpg"
+        alt="" />
+      <div class="eriww">
+        <el-input placeholder="请输入店名" v-model="searchKeyword" clearable>
+        </el-input>
+        <ul>
+          <li class="iowe">
+            <div class="tu">图片</div>
+            <b class="spn1">介绍 </b>
+            <div class="b11">单价</div>
+            <div class="zo1ng">数量</div>
+            <div class="op1p">小计</div>
+            <div class="cao">操作</div>
+          </li>
+
+          <li
+            id="oppew"
+            v-for="item in     filteredUsers"
+            :key="item.id"
+            :class="{ 'selected': item.selected }">
+            <div class="bwje">
+              <input
+                type="checkbox"
+                v-model="item.selected"
+                @change="calculateTotalPrice" />
+              {{item.biaoti}}
+            </div>
+            <img :src="item.ims" alt="" />
+            <span>
+              <b class="span1" v-html="item.name"> </b>
+              <div class="b1">￥{{ item.price }}</div>
+              <div class="zong">
+                <button @click="decreaseQuantity(item)">-</button>
+                {{ item.quantity }}
+                <button @click="increaseQuantity(item)">+</button>
+              </div>
+              <div class="opp">￥{{ item.price }}</div>
+              <el-button
+                class="brnn"
+                size="small "
+                @click="del(item)"
+                type="danger"
+                icon="el-icon-delete"
+                circle></el-button>
+            </span>
+          </li>
+        </ul>
+        <hr />
+        <div class="sdio">
+          <input
+            class="inwe"
+            type="checkbox"
+            v-model="allSelected"
+            @change="selectAllItems" />
+          全选
+        </div>
+        <p class="p">总价：￥{{ totalPrice }}</p>
+      </div>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            cart: [
+              {
+                biaoti: "华海威汽车装饰专营店",
+                ims: "https://img13.360buyimg.com/n0/s80x80_jfs/t1/190457/28/39770/106716/65360381F47079472/b60588943eac0ca5.jpg.dpg",
+                name: "车载手机支架自由牛 (ZIYOUNIU)车内<br/>仪表台汽车多功能固定车用导航卡",
+                price: 10,
+                selected: false,
+                quantity: 1,
+              },
+              {
+                biaoti: "联合利华京东自营旗舰店",
+                ims: "https://img30.360buyimg.com/n0/s80x80_jfs/t1/151744/3/33998/177525/64c20491Fb4f15f3e/9f469e2857935f3b.jpg.dpg",
+                name: "京东超市清扬 (CLEAR) 男<br/>士洁面控油酷爽型洁面赌哩190g",
+                price: 20,
+                selected: false,
+                quantity: 1,
+              },
+              {
+                biaoti: "联合利华京东自营旗舰店",
+                ims: "https://img12.360buyimg.com/n0/s80x80_jfs/t1/180516/20/37918/24206/65014f1cF29b66343/8d1a8b7f59f460f1.jpg.dpg",
+                name: "Apple iPhone 15(A3092) 128GB粉色<br/>支持移 动联通电信5G 双卡双待手",
+                price: 30,
+                selected: false,
+                quantity: 1,
+              },
+              {
+                biaoti: "真维斯母婴旗舰店",
+                ims: "https://img14.360buyimg.com/n0/s80x80_jfs/t1/134637/5/36858/58860/649e929aFcda99ec6/05cb4ee1115af165.jpg.dpg",
+                name: "真维斯男童长袖t恤2023新款儿童纯棉打<br/>底衫中大童春秋款潮流上衣[帅气1",
+                price: 40,
+                selected: false,
+                quantity: 1,
+              },
+            ],
+            searchKeyword: "",
+
+            totalPrice: 0,
+            allSelected: false,
+          };
+        },
+
+        computed: {
+          filteredUsers() {
+            return this.cart.filter((user) => {
+              return user.biaoti
+                .toLowerCase()
+                .includes(this.searchKeyword.toLowerCase());
+            });
+          },
+        },
+
+        methods: {
+          del(item) {
+            const index = this.cart.indexOf(item);
+
+            this.$confirm("确认删除吗？")
+              .then((_) => {
+                this.cart.splice(index, 1);
+              })
+              .catch((_) => {});
+          },
+          calculateTotalPrice() {
+            this.totalPrice = this.cart
+              .filter((item) => item.selected)
+              .reduce((total, item) => total + item.price * item.quantity, 0);
+          },
+          increaseQuantity(item) {
+            item.quantity++;
+            this.calculateTotalPrice();
+          },
+          decreaseQuantity(item) {
+            if (item.quantity > 1) {
+              item.quantity--;
+              this.calculateTotalPrice();
+            }
+          },
+          selectAllItems() {
+            this.cart.forEach((item) => (item.selected = this.allSelected));
+            this.calculateTotalPrice();
+          },
+        },
+
+        watch: {
+          cart: {
+            handler() {
+              this.allSelected = this.cart.every((item) => item.selected);
+            },
+            deep: true,
+          },
+        },
+      });
+    </script>
+  </body>
+  <style>
+    .sdio {
+      float: left;
+      margin-left: 50px;
+    }
+
+    .tianasr {
+      width: 350px;
+      margin-top: 10px;
+      margin-left: 40px;
+    }
+
+    .imsj {
+      width: 100px;
+      float: left;
+    }
+
+    .iowe {
+      background-color: #f3f3f3;
+      height: 50px;
+      line-height: 50px;
+    }
+
+    .b11 {
+      float: left;
+      margin-left: 230px;
+    }
+
+    ul {
+      width: 1050px;
+    }
+
+    .eriww {
+      width: 1130px;
+      margin: auto;
+      height: 820px;
+      border: #f3f3f3 solid 5px;
+    }
+
+    li {
+      list-style: none;
+      overflow: hidden;
+    }
+
+    .zo1ng {
+      float: left;
+      margin-left: 170px;
+    }
+
+    .op1p {
+      float: left;
+      margin-left: 180px;
+    }
+
+    .cao {
+      float: left;
+      margin-left: 90px;
+    }
+
+    #oppew {
+      overflow: hidden;
+      list-style: none;
+      margin-top: 30px;
+      height: 120px;
+    }
+
+    .spn1 {
+      float: left;
+      margin-left: 130px;
+    }
+
+    .tu {
+      float: left;
+      margin-left: 20px;
+    }
+
+    .bwje {
+      margin-bottom: 10px;
+    }
+
+    .selected {
+      background-color: #fff4e8 !important;
+    }
+
+    .brnn {
+      float: left;
+      margin-left: 100px;
+      text-align: center;
+    }
+
+    .zong {
+      float: left;
+    }
+
+    .p {
+      font-size: 23px;
+      color: red;
+      margin-right: 2%;
+      float: right;
+    }
+
+    img {
+      float: left;
+    }
+
+    .b1 {
+      width: 200px;
+      float: left;
+      margin-left: 30px;
+    }
+
+    span {
+      margin-left: 30px;
+      font-weight: 200;
+      float: left;
+    }
+
+    .opp {
+      float: left;
+      margin-left: 160px;
+      font-weight: 900;
+    }
+
+    .span1 {
+      width: 300px;
+      line-height: 25px;
+      font-size: 15px;
+      float: left;
+    }
+  </style>
+</html>

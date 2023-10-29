@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    /* #box {
+      text-align: center;
+    } */
+    form button {
+      width: 80px;
+      height: 30px;
+      border: none;
+      color: #ffffff;
+      background-color: #0072ff;
+    }
+    ol {
+      width: 500px;
+      padding: 0;
+      list-style-type: decimal;
+      text-align: center;
+    }
+
+    .news-list li {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #f2f2f2;
+    }
+
+    .news-list h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .news-list p {
+      margin-bottom: 10px;
+    }
+
+    .news-list button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .news-list button:hover {
+      background-color: #45a049;
+    }
+    li:hover {
+      background-color: #ccc;
+    }
+  </style>
+  <body>
+    <div id="box">
+      <h2>{{msg}}</h2>
+      <form @submit.prevent="addNews">
+        <label for="title">标题</label>
+        <input type="text" id="title" v-model="newtitle" />
+        <br />
+        <label for="content">内容</label>
+        <input type="text" name="" id="content" v-model="newContent" />
+        <br />
+        <label for="author">作者</label>
+        <input type="text" v-model="newAuthor" id="author" />
+        <br />
+        <label for="date">时间</label>
+        <input type="text" v-model="newDate" />
+        <br />
+        <button type="submit">添加</button>
+      </form>
+
+      <ol class="news-list">
+        <li v-for="(item, index) in arr" :key="item.id" v-back="index">
+          <h3>{{item.Id}}、<strong>标题：</strong>{{item.title}}</h3>
+          <p><strong>内容：</strong>{{item.content}}</p>
+          <p><strong>作者：</strong>{{item.author}}</p>
+          <p><strong>日期：</strong>{{item.date}}</p>
+          <button @click="del(index)">删除</button>
+          <button @click="check(index)">编辑</button>
+        </li>
+      </ol>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    new Vue({
+      el: "#box",
+      directives: {
+        back(v, index) {
+          if (index.value % 2 == 0) {
+            v.style.backgroundColor = "red";
+          }
+        },
+      },
+      data: {
+        msg: "新闻列表",
+        newtitle: "",
+        newContent: "",
+        newAuthor: "",
+        newDate: "",
+        arr: [
+          {
+            Id: 1,
+            title: "为强国建设、民族复兴勇担巾帼使命",
+            content:
+              "2021年12月12日，在纪念全国妇女节76周年暨妇女节活动上，全国妇女界",
+            author: "中国妇女网",
+            date: "2022-03-08",
+          },
+          {
+            Id: 2,
+            title: "#权志龙因涉嫌吸毒被立案#",
+            content:
+              "25日，据韩媒，演员李善均涉嫌吸毒被立案后，BIGBANG出身的GD(权志龙)被追加立案。",
+            author: "娱乐课代表柠檬",
+            date: "2022-03-08",
+          },
+          {
+            Id: 3,
+            title: "广东一学校近700名学生集体退学",
+            content:
+              "近日，清远市德圣健康职业技术学校被曝出无老师给学生现场上课，大量家长感到担忧并要求退学退费，引发关注",
+            author: "环球日报",
+            date: "2022-10-25",
+          },
+          {
+            Id: 4,
+            title: "中国经济具有巨大韧性和潜力",
+            content:
+              "正确认识当前经济形势，是我们扎实做好经济工作的基础。日前，三季度经济数据公布，中国经济恢复向好总体回升的态势更趋明显，世界经济增长的主引擎动力强劲、韧性十足。",
+            author: "人民网",
+            date: "2022-10-25",
+          },
+        ],
+      },
+      methods: {
+        addNews() {
+          let data = {
+            Id: this.arr.length + 1,
+            title: this.newtitle,
+            content: this.newContent,
+            author: this.newAuthor,
+            date: this.newDate,
+          };
+          this.newtitle = "";
+          this.newContent = "";
+          this.newAuthor = "";
+          this.newDate = "";
+          this.arr.push(data);
+        },
+        del(index) {
+          this.arr.splice(index, 1);
+        },
+        check(index) {
+          console.log(index);
+          this.newtitle = this.arr[index].title;
+          this.newContent = this.arr[index].content;
+          this.newAuthor = this.arr[index].author;
+          this.newDate = this.arr[index].date;
+        },
+      },
+    });
+  </script>
+</html>

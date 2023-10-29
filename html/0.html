@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+  </head>
+  <style></style>
+  <body>
+    <div id="box">
+        <li></li>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    // let arr = [1, 2, 3, 4, 5, 6];
+    // c = [...arr];
+    // let esst = Object.assign({}, arr);
+    // Array.prototype.arr;
+    // console.log();
+    // console.log(esst);
+    function Person(name, age) {
+      this.name = name;
+      this.age = age;
+    }
+    Person.prototype.getName = function () {
+      return this.name;
+    };
+    Person.prototype.getAge = function () {
+      return this.age;
+    };
+
+    const person1 = new Person("Alice", 25);
+    const Person0 = new Person("Bob", 66);
+    console.log(person1.getAge(), Person0.getName());
+    console.log(Person0.getAge(), person1.getName());
+  </script>
+</html>
