@@ -21,7 +21,13 @@
 // };
 // console.log(a);
 
-let arr = [0, 1, 2, 3, 4, 5, 6];
-let str = arr.join("");
-console.log(str);
-console.log(Array.isArray(str));
+// let arr = [0, 1, 2, 3, 4, 5, 6];
+// let str = arr.join("");
+// console.log(str);
+// console.log(Array.isArray(str));
+for (const i = 0; i < 5; i++) {
+  //   console.log(i);
+  setTimeout(function () {
+    console.log(i);
+  }, 1000);
+}
