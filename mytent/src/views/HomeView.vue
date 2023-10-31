@@ -3,11 +3,11 @@
     <HelloWorld @submit="listener" />
     <div class="bvs">
       <div class="budiw">
-        <div class="hwehi"><b class="bop">斗罗大陆</b>---看过</div>
+        <div class="hwehi"><b class="bop">斗罗大陆</b>---<strong>看过</strong></div>
 
         <div class="hais">当前时间：{{ currentTime }}</div>
       </div>
-      <el-divider></el-divider>
+      <hr>
 
       <div class="budi">
         《斗罗大陆》讲述了穿越到斗罗大陆的唐三如何一步步修炼武魂，由人修炼为神，最终铲除了斗罗大陆上的邪恶力量，报了杀母之仇，成为斗罗大陆最强者 [1]。
@@ -16,13 +16,13 @@
     <div class="bvs" v-for="(item, index) in arr" :key="index">
       <div class="budiw">
         <div class="hwehi">
-          <b class="bop">{{ item.input }}</b>---{{ item.radio }}
+          <b class="bop">{{ item.input }}</b>--- <strong>{{ item.radio }}</strong>
         </div>
 
         <div class="hais">当前时间：{{ currentTime }}</div>
       </div>
 
-      <el-divider></el-divider>
+      <hr>
 
       <div class="budi">{{ item.textarea }}</div>
     </div>
@@ -74,7 +74,11 @@ export default {
 </script>
 <style>
 .bop {
-  color: yellow !important;
+  color: rgb(4, 0, 255) !important;
+}
+
+strong {
+  color: red !important;
 }
 
 .hais {
