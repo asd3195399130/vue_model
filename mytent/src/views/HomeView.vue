@@ -78,7 +78,7 @@ export default {
 }
 
 strong {
-  color: red !important;
+  color: rgb(60, 255, 0) !important;
 }
 
 .hais {
@@ -104,7 +104,7 @@ strong {
   margin: auto;
   height: 200px;
   margin-top: 30px;
-  border: solid 4px #ccc;
+  background: red;
 }
 
 .budi {
