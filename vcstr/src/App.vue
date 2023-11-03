@@ -1,14 +1,16 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <!-- <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>| -->
+      <router-link to="/Three">Three</router-link>|
+      <router-link to="/Router">Router</router-link>
     </nav>
     <router-view />
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

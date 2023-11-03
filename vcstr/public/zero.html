@@ -1,0 +1,28 @@
+<body>
+  <p id="box"></p>
+  <input type="text" value="name" id="vel" />
+</body>
+<script>
+  let box = document.getElementById("box");
+  let inp = document.getElementById("vel");
+
+  let obj = {
+    name: "你好",
+  };
+  box.innerHTML = obj.name;
+  inp.value = obj.name;
+  Object.defineProperty(obj, "name", {
+    set: function (newData) {
+      box.innerHTML = newData;
+      console.log(newData);
+    },
+
+    get: function (newData) {
+      //   inp.val = newData.name;
+      console.log("你好");
+    },
+  });
+  inp.onchange = function (params) {
+    obj.name = inp.value;
+  };
+</script>
